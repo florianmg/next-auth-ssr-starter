@@ -1,0 +1,47 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  .content {
+    position: relative;
+    max-width: 960px;
+    width: 100%;
+    margin: 0 15px;
+    padding: 25px;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 7px;
+
+    .close-btn-container {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 50px;
+      bottom: -50px;
+      font-size: 2.1rem;
+
+      .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 100%;
+        background-color: white;
+      }
+    }
+  }
+}
