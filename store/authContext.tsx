@@ -1,10 +1,20 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { User, onIdTokenChanged } from 'firebase/auth';
 import { auth } from '../lib/firebaseClient';
 import nookies from 'nookies';
 
-export const AuthContext = createContext<{ user: User | null }>({
+export const AuthContext = createContext<{
+  user: User | null;
+  setUser: Dispatch<SetStateAction<User | null>>;
+}>({
   user: null,
+  setUser: () => null,
 });
 
 export const AuthProvider = ({ children }: any) => {
@@ -37,6 +47,8 @@ export const AuthProvider = ({ children }: any) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, setUser }}>
+      {children}
+    </AuthContext.Provider>
   );
 };

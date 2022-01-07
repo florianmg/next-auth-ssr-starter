@@ -1,6 +1,6 @@
 import nookies from 'nookies';
 import { GetServerSidePropsContext } from 'next';
-import { getAuth } from '../lib/firebaseAdmin';
+import { auth } from '../lib/firebaseAdmin';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const cookies = nookies.get(ctx);
@@ -14,7 +14,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       props: {},
     };
   } else {
-    const token = await getAuth().verifyIdToken(cookies.token);
+    // verify user token validity
+    const token = await auth.verifyIdToken(cookies.token);
 
     // the user is authenticated!
     const { uid, email } = token;

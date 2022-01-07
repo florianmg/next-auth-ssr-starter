@@ -13,7 +13,7 @@ import {
 import { auth } from '../lib/firebaseClient';
 import { useAuth } from '../hooks/useAuth';
 
-const Login = () => {
+const Register = () => {
   const { user, setUser } = useAuth();
 
   const [formValues, setFormValues] = useState({
@@ -21,21 +21,21 @@ const Login = () => {
     password: '',
   });
 
-  const handleEmailLogin = (e: React.SyntheticEvent) => {
+  const handleEmailRegister = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const { email, password } = formValues;
-    signInWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
-        console.log('login success', result);
+        console.log('register success', result);
         setUser(result.user);
       })
-      .catch((e) => console.log('login error > ', e));
+      .catch((e) => console.log('register error > ', e));
   };
 
   return (
     <main>
-      <h1>Login page</h1>
-      <form onSubmit={handleEmailLogin}>
+      <h1>Register page</h1>
+      <form onSubmit={handleEmailRegister}>
         <div>
           <label htmlFor="email">Email</label>
           <input
@@ -60,10 +60,10 @@ const Login = () => {
             }
           />
         </div>
-        <button type="submit">Se connecter</button>
+        <button type="submit">S&apos;enregistrer</button>
       </form>
     </main>
   );
 };
 
-export default Login;
+export default Register;
