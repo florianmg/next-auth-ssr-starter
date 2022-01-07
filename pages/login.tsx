@@ -13,6 +13,8 @@ import {
 import { auth } from '../lib/firebaseClient';
 import { useAuth } from '../hooks/useAuth';
 
+import GoogleAuth from '../components/google-auth';
+
 const Login = () => {
   const { user, setUser } = useAuth();
 
@@ -62,6 +64,7 @@ const Login = () => {
         </div>
         <button type="submit">Se connecter</button>
       </form>
+      <GoogleAuth />
     </main>
   );
 };

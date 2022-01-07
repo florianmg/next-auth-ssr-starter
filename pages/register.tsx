@@ -12,6 +12,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '../lib/firebaseClient';
 import { useAuth } from '../hooks/useAuth';
+import GoogleAuth from '../components/google-auth';
 
 const Register = () => {
   const { user, setUser } = useAuth();
@@ -62,6 +63,7 @@ const Register = () => {
         </div>
         <button type="submit">S&apos;enregistrer</button>
       </form>
+      <GoogleAuth />
     </main>
   );
 };
