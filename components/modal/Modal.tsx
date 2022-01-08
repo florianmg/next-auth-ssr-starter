@@ -4,13 +4,19 @@ import styles from './Modal.module.scss';
 interface IModalProps {
   isOpen: boolean;
   onClose: () => void;
+  maxWidth?: number;
 }
 
-const Modal: React.FC<IModalProps> = ({ children, isOpen, onClose }) => {
+const Modal: React.FC<IModalProps> = ({
+  children,
+  isOpen,
+  onClose,
+  maxWidth = 960,
+}) => {
   if (!isOpen) return <></>;
   return (
     <div className={styles.container}>
-      <div className={styles.content}>
+      <div className={styles.content} style={{ maxWidth }}>
         <span className={styles['close-btn-container']}>
           <span role="button" className={styles.icon} onClick={onClose}>
             <CgCloseO />

@@ -1,20 +1,10 @@
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+interface IGoogleAuthProps {
+  onClick: () => void;
+}
 
-import { useAuth } from '../../hooks/useAuth';
-import { auth } from '../../lib/firebaseClient';
-
-const GoogleAuth: React.FC = () => {
-  const { setUser } = useAuth();
-  const handleGoogleAuth = () => {
-    const googleProvider = new GoogleAuthProvider();
-    signInWithPopup(auth, googleProvider)
-      .then((user) => {
-        setUser(user.user);
-      })
-      .then((e) => console.log('google auth error > ', e));
-  };
+const GoogleAuth: React.FC<IGoogleAuthProps> = ({ onClick }) => {
   return (
-    <div role="button" onClick={handleGoogleAuth}>
+    <div role="button" onClick={onClick}>
       Continuer avec Google
     </div>
   );
