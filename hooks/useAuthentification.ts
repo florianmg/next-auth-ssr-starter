@@ -1,9 +1,6 @@
-import  { Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/router'
 
 import {
-  onAuthStateChanged,
-  User,
   GoogleAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
@@ -20,11 +17,7 @@ interface IFormValues {
   password: string;
 }
 
-interface IUseAuthentificationProps {
-  setUser: Dispatch<SetStateAction<User | null>>
-}
-
-const useAuthentification = (/*{ setUser }: IUseAuthentificationProps */) => {
+const useAuthentification = () => {
   const { setUser } = useAuth();
   const router = useRouter();
 
