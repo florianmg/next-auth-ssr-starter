@@ -31,7 +31,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
 
   const handleResetPasswordLink = async (email: string) => {
     setIsLoading(true);
-    const success = await sendResetPasswordLink(email);
+    const { success } = await sendResetPasswordLink(email);
     if (success) {
       setIsLoading(false);
       setCurrentContentState(CONTENT_STATE.LOGIN);

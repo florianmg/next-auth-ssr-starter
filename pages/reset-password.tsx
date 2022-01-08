@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import useAuthentification from '../hooks/useAuthentification';
 
 const ResetPassword: React.FC = () => {
+  const { resetPassword } = useAuthentification();
+  const router = useRouter();
   const [formValues, setFormValues] = useState({
     password: '',
     confirmPassword: '',
@@ -16,12 +20,25 @@ const ResetPassword: React.FC = () => {
     }
   }, [formValues]);
 
-  const resetPassword = () => {};
+  const handleResetPassword = async (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    const { oobCode } = router.query;
+    const { password } = formValues;
+
+    const { success } = await resetPassword({
+      password,
+      oobCode: oobCode as string,
+    });
+
+    if (success) {
+      router.push('/');
+    }
+  };
 
   return (
     <div>
       <h3>Réinitialiser le mot de passe</h3>
-      <form>
+      <form onSubmit={handleResetPassword}>
         <div>
           <label htmlFor="password">Nouveau mot de passe</label>
           <input
@@ -52,7 +69,12 @@ const ResetPassword: React.FC = () => {
         ) : formValues.password.length > 0 ? (
           <p>Les mots de passe ne sont pas identiques</p>
         ) : null}
-        <button type="submit">Changer le mot de passe</button>
+        <button
+          disabled={!isPasswordsIdentical || formValues.password.length === 0}
+          type="submit"
+        >
+          Changer le mot de passe
+        </button>
       </form>
     </div>
   );

@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
+  confirmPasswordReset
 } from 'firebase/auth';
 
 import { auth } from '../lib/firebaseClient'
@@ -47,6 +48,14 @@ const useAuthentification = () => {
     })
   }
 
+  const resetPassword = async ({password, oobCode}: {password: string; oobCode: string}): Promise<{success: boolean}> => {
+    return confirmPasswordReset(auth, oobCode, password).then(() => {
+      return {success: true}
+    }).catch((error) => {
+      return {success: false}
+    })
+  }
+
   const googleAuth = () => {
     const googleProvider = new GoogleAuthProvider();
     signInWithPopup(auth, googleProvider)
@@ -68,8 +77,8 @@ const useAuthentification = () => {
     emailRegister,
     googleAuth,
     sendResetPasswordLink,
+    resetPassword,
     logout,
-    
   }
 }
 
