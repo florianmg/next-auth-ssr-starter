@@ -10,7 +10,6 @@ import Modal from '../modal';
 import Loader from '../loader';
 
 import styles from './AuthForms.module.scss';
-import { emit } from 'process';
 
 interface IAuthFormsProps {
   isOpen: boolean;
