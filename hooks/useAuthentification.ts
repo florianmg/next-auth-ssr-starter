@@ -37,8 +37,14 @@ const useAuthentification = () => {
     .catch((e) => console.log('register error > ', e));
   }
 
-  const sendResetPasswordLink = (email: string) => {
-    sendPasswordResetEmail(auth, email);
+  const sendResetPasswordLink = async (email: string): Promise<{success: boolean}> => {
+    return sendPasswordResetEmail(auth, email).then(() => {
+      return {success: true}
+    }).catch((error) => {
+      return {
+        success: false
+      };
+    })
   }
 
   const googleAuth = () => {

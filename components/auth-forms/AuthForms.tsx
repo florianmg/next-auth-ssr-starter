@@ -6,6 +6,7 @@ import useAuthentification from '../../hooks/useAuthentification';
 
 import Modal from '../modal';
 import GoogleAuth from '../google-auth';
+import Loader from '../loader';
 
 import styles from './AuthForms.module.scss';
 
@@ -35,6 +36,12 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     password: '',
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState({
+    displayed: false,
+    text: '',
+  });
+
   const handleLogin = useCallback(
     (e: React.SyntheticEvent) => {
       e.preventDefault();
@@ -42,6 +49,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     },
     [emailLogin, formValues]
   );
+
   const handleRegister = useCallback(
     (e: React.SyntheticEvent) => {
       e.preventDefault();
@@ -51,14 +59,23 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
   );
 
   const handleResetPassword = useCallback(
-    (e: React.SyntheticEvent) => {
+    async (e: React.SyntheticEvent) => {
       e.preventDefault();
-      sendResetPasswordLink(formValues.email);
+      setIsLoading(true);
+      const success = await sendResetPasswordLink(formValues.email);
+      if (success) {
+        const { email } = formValues;
+        const text = `Si l'adresse email éxiste, un email a été envoyé à ${email}`;
+        setIsLoading(false);
+        setMessage({
+          displayed: true,
+          text,
+        });
+      }
     },
     [sendResetPasswordLink, formValues]
   );
 
-  useEffect(() => setCurrentContentState(CONTENT_STATE.LOGIN), []);
   useEffect(() => {
     if (currentContentState === currentContent.state) return;
     switch (currentContentState) {
@@ -134,60 +151,72 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
           )}
         </div>
         <div className={styles.content}>
-          <h3>Bienvenue sut Hâpy</h3>
-          <form onSubmit={currentContent.action}>
-            <div>
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="text"
-                required
-                value={formValues.email}
-                onChange={(e) =>
-                  setFormValues({ ...formValues, email: e.currentTarget.value })
-                }
-              />
+          {isLoading ? (
+            <div className={styles.loader}>
+              <Loader />
             </div>
-            {currentContentState !== CONTENT_STATE.PASSWORD && (
-              <>
+          ) : (
+            <>
+              <h3>Bienvenue sut Hâpy</h3>
+              {message.displayed && <p>{message.text}</p>}
+              <form onSubmit={currentContent.action}>
                 <div>
-                  <label htmlFor="password">Mot de passe</label>
+                  <label htmlFor="email">Email</label>
                   <input
-                    id="password"
-                    type="password"
+                    id="email"
+                    type="text"
                     required
-                    value={formValues.password}
+                    value={formValues.email}
                     onChange={(e) =>
                       setFormValues({
                         ...formValues,
-                        password: e.currentTarget.value,
+                        email: e.currentTarget.value,
                       })
                     }
                   />
                 </div>
-                {currentContent.displayResetPasswordLink && (
-                  <small
-                    onClick={() =>
-                      setCurrentContentState(CONTENT_STATE.PASSWORD)
-                    }
-                  >
-                    Mot de passe oublié ?
-                  </small>
+                {currentContentState !== CONTENT_STATE.PASSWORD && (
+                  <>
+                    <div>
+                      <label htmlFor="password">Mot de passe</label>
+                      <input
+                        id="password"
+                        type="password"
+                        required
+                        value={formValues.password}
+                        onChange={(e) =>
+                          setFormValues({
+                            ...formValues,
+                            password: e.currentTarget.value,
+                          })
+                        }
+                      />
+                    </div>
+                    {currentContent.displayResetPasswordLink && (
+                      <small
+                        onClick={() =>
+                          setCurrentContentState(CONTENT_STATE.PASSWORD)
+                        }
+                      >
+                        Mot de passe oublié ?
+                      </small>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-            <button type="submit">{currentContent.btn}</button>
-          </form>
+                <button type="submit">{currentContent.btn}</button>
+              </form>
 
-          {currentContentState !== CONTENT_STATE.PASSWORD ? (
-            <>
-              <hr />
-              <GoogleAuth onClick={googleAuth} />
+              {currentContentState !== CONTENT_STATE.PASSWORD ? (
+                <>
+                  <hr />
+                  <GoogleAuth onClick={googleAuth} />
+                </>
+              ) : (
+                <p onClick={() => setCurrentContentState(CONTENT_STATE.LOGIN)}>
+                  {"< Finalement j'ai retrouvé mon mot de passe !"}
+                </p>
+              )}
             </>
-          ) : (
-            <p onClick={() => setCurrentContentState(CONTENT_STATE.LOGIN)}>
-              Finalement j&apos;ai retrouvé mon mot de passe !
-            </p>
           )}
         </div>
       </div>

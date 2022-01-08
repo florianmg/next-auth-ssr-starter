@@ -5,7 +5,7 @@ import AuthForms from '../auth-forms/AuthForms';
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();
-  const [isAuthFormsOpen, setIsAuthFormsOpen] = useState(true);
+  const [isAuthFormsOpen, setIsAuthFormsOpen] = useState(false);
   return user !== null ? (
     <nav>
       <ul>
