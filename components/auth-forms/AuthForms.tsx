@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import clx from 'classnames';
 
+import useAuthentification from '../../hooks/useAuthentification';
+
 import Modal from '../modal';
 import GoogleAuth from '../google-auth';
 
@@ -19,6 +21,8 @@ const CONTENT_STATE = {
 };
 
 const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
+  const { emailLogin, emailRegister, googleAuth, sendResetPasswordLink } =
+    useAuthentification();
   const [currentContentState, setCurrentContentState] = useState(0);
   const [currentContent, setCurrentContent] = useState({
     btn: '',
@@ -32,15 +36,15 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
 
   const handleLogin = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log('handleLogin');
+    emailLogin(formValues);
   };
   const handleRegister = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log('handleRegister');
+    emailRegister(formValues);
   };
   const handleResetPassword = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log('handleResetPassword');
+    sendResetPasswordLink(formValues.email);
   };
 
   useEffect(() => {
@@ -156,7 +160,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
           {currentContentState !== CONTENT_STATE.PASSWORD ? (
             <>
               <hr />
-              <GoogleAuth />
+              <GoogleAuth onClick={googleAuth} />
             </>
           ) : (
             <p onClick={() => setCurrentContentState(CONTENT_STATE.LOGIN)}>
