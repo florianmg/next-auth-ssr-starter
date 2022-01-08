@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import clx from 'classnames';
 
@@ -25,6 +25,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     useAuthentification();
   const [currentContentState, setCurrentContentState] = useState(0);
   const [currentContent, setCurrentContent] = useState({
+    state: 1,
     btn: '',
     action: (e: React.SyntheticEvent) => {},
     displayResetPasswordLink: false,
@@ -34,23 +35,36 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     password: '',
   });
 
-  const handleLogin = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    emailLogin(formValues);
-  };
-  const handleRegister = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    emailRegister(formValues);
-  };
-  const handleResetPassword = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    sendResetPasswordLink(formValues.email);
-  };
+  const handleLogin = useCallback(
+    (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      emailLogin(formValues);
+    },
+    [emailLogin, formValues]
+  );
+  const handleRegister = useCallback(
+    (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      emailRegister(formValues);
+    },
+    [emailRegister, formValues]
+  );
 
+  const handleResetPassword = useCallback(
+    (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      sendResetPasswordLink(formValues.email);
+    },
+    [sendResetPasswordLink, formValues]
+  );
+
+  useEffect(() => setCurrentContentState(CONTENT_STATE.LOGIN), []);
   useEffect(() => {
+    if (currentContentState === currentContent.state) return;
     switch (currentContentState) {
       case CONTENT_STATE.LOGIN:
         setCurrentContent({
+          state: CONTENT_STATE.LOGIN,
           btn: 'Se connecter',
           action: handleLogin,
           displayResetPasswordLink: true,
@@ -59,6 +73,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
 
       case CONTENT_STATE.REGISTER:
         setCurrentContent({
+          state: CONTENT_STATE.REGISTER,
           btn: "S'inscrire",
           action: handleRegister,
           displayResetPasswordLink: false,
@@ -66,12 +81,19 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
         break;
       case CONTENT_STATE.PASSWORD:
         setCurrentContent({
+          state: CONTENT_STATE.PASSWORD,
           btn: 'Réinitialiser le mot de passe',
           action: handleResetPassword,
           displayResetPasswordLink: false,
         });
     }
-  }, [currentContentState]);
+  }, [
+    currentContentState,
+    handleLogin,
+    handleRegister,
+    handleResetPassword,
+    currentContent,
+  ]);
 
   useEffect(() => {
     setFormValues((prevState) => {
