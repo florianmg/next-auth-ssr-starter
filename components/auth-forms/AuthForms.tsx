@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import clx from 'classnames';
+import toast from 'react-hot-toast';
 
 import useAuthentification from '../../hooks/useAuthentification';
 import LoginForm from './LoginForm';
@@ -23,6 +25,7 @@ const CONTENT_STATE = {
 };
 
 const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
+  const router = useRouter();
   const { emailLogin, emailRegister, googleAuth, sendResetPasswordLink } =
     useAuthentification();
 
@@ -31,10 +34,37 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
 
   const handleResetPasswordLink = async (email: string) => {
     setIsLoading(true);
-    const { success } = await sendResetPasswordLink(email);
+    const { success, error } = await sendResetPasswordLink(email);
     if (success) {
       setIsLoading(false);
       setCurrentContentState(CONTENT_STATE.LOGIN);
+    } else {
+      setIsLoading(false);
+      toast.error(error?.code as string);
+    }
+  };
+
+  const handleEmailLogin = async (formValues: {
+    email: string;
+    password: string;
+  }) => {
+    const { success, error } = await emailLogin(formValues);
+    if (success) {
+      router.push('/dashboard');
+    } else {
+      toast.error(error?.code as string);
+    }
+  };
+
+  const handleEmailRegister = async (formValues: {
+    email: string;
+    password: string;
+  }) => {
+    const { success, error } = await emailRegister(formValues);
+    if (success) {
+      router.push('/dashboard');
+    } else {
+      toast.error(error?.code as string);
     }
   };
 
@@ -72,7 +102,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
             <Loader />
           ) : currentContentState === CONTENT_STATE.LOGIN ? (
             <LoginForm
-              onSubmit={(formValues) => emailLogin(formValues)}
+              onSubmit={handleEmailLogin}
               onGoogleAuth={googleAuth}
               onForgottenPassword={() =>
                 setCurrentContentState(CONTENT_STATE.PASSWORD)
@@ -80,7 +110,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
             />
           ) : currentContentState === CONTENT_STATE.REGISTER ? (
             <RegisterForm
-              onSubmit={(formValues) => emailRegister(formValues)}
+              onSubmit={handleEmailRegister}
               onGoogleAuth={googleAuth}
             />
           ) : currentContentState === CONTENT_STATE.PASSWORD ? (
