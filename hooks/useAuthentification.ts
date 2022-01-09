@@ -7,7 +7,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
-  confirmPasswordReset
+  confirmPasswordReset,
+  AuthError
 } from 'firebase/auth';
 
 import { auth } from '../lib/firebaseClient'
@@ -22,37 +23,57 @@ const useAuthentification = () => {
   const { setUser } = useAuth();
   const router = useRouter();
 
-  const emailLogin = ({email, password}: IFormValues) => {
-    signInWithEmailAndPassword(auth, email, password)
+  const emailLogin = async ({email, password}: IFormValues): Promise<{success: boolean; error?: AuthError}> => {
+    return signInWithEmailAndPassword(auth, email, password)
     .then((result) => {
       setUser(result.user);
+      return {
+        success: true
+      }
     })
-    .catch((e) => console.log('login error > ', e));
+    .catch((error) => {
+      return {
+        success: false,
+        error
+      }
+    });
   }
 
-  const emailRegister = ({email, password}: IFormValues) => {
-    createUserWithEmailAndPassword(auth, email, password)
+  const emailRegister = async ({email, password}: IFormValues): Promise<{success: boolean; error?: AuthError}>  => {
+    return createUserWithEmailAndPassword(auth, email, password)
     .then((result) => {
       setUser(result.user);
+      return {
+        success: true
+      }
     })
-    .catch((e) => console.log('register error > ', e));
+    .catch((error) => {  
+      
+      return {
+        success: false,
+        error
+      }
+    });
   }
 
-  const sendResetPasswordLink = async (email: string): Promise<{success: boolean}> => {
+  const sendResetPasswordLink = async (email: string): Promise<{success: boolean; error?: AuthError}> => {
     return sendPasswordResetEmail(auth, email).then(() => {
-      return {success: true}
+      return {
+        success: true
+      }
     }).catch((error) => {
       return {
-        success: false
+        success: false,
+        error
       };
     })
   }
 
-  const resetPassword = async ({password, oobCode}: {password: string; oobCode: string}): Promise<{success: boolean}> => {
+  const resetPassword = async ({password, oobCode}: {password: string; oobCode: string}): Promise<{success: boolean; error?: AuthError}> => {
     return confirmPasswordReset(auth, oobCode, password).then(() => {
       return {success: true}
     }).catch((error) => {
-      return {success: false}
+      return {success: false, error}
     })
   }
 
