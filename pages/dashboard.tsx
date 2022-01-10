@@ -1,9 +1,13 @@
 import nookies from 'nookies';
 import { GetServerSidePropsContext } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 import { auth } from '../lib/firebaseAdmin';
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const cookies = nookies.get(ctx);
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const cookies = nookies.get(context);
 
   if (!cookies.token) {
     return {
@@ -21,14 +25,31 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     const { uid, email } = token;
 
     // FETCH STUFF HERE!! 🚀
+
+    // Get translations
+
     return {
-      props: { message: `Your email is ${email} and your UID is ${uid}.` },
+      props: {
+        ...(await serverSideTranslations(context.locale as string, [
+          'common',
+          'auth',
+        ])),
+        message: `Hello, your email adress is ${email} and your uid is ${uid} `,
+      },
     };
   }
 };
 
 const Dashboard: React.FC<{ message?: string }> = ({ message }) => {
-  return <h1>{message}</h1>;
+  const { t } = useTranslation();
+  return (
+    <h1>
+      The app name is {t('common:app_name')}
+      <br />
+      {message}
+    </h1>
+  );
+  // return <h1>{message}</h1>;
 };
 
 export default Dashboard;
