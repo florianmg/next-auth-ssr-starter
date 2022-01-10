@@ -1,8 +1,10 @@
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
 import useAuthentification from '../../hooks/useAuthentification';
 
 const LoggedNavigation: React.FC = () => {
   const { logout } = useAuthentification();
+  const { t } = useTranslation();
 
   return (
     <nav>
@@ -13,7 +15,7 @@ const LoggedNavigation: React.FC = () => {
           </Link>
         </li>
         <li>
-          <a onClick={logout}>Se déconnecter</a>
+          <a onClick={logout}>{t('auth:logout')}</a>
         </li>
       </ul>
     </nav>

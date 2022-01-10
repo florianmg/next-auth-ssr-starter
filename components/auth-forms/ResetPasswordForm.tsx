@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 interface IResetPasswordFormProps {
   onSubmit: (email: string) => void;
@@ -10,6 +11,7 @@ const ResetPasswordForm: React.FC<IResetPasswordFormProps> = ({
   onBack,
 }) => {
   const [email, setEmail] = useState('');
+  const { t } = useTranslation();
 
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -19,7 +21,7 @@ const ResetPasswordForm: React.FC<IResetPasswordFormProps> = ({
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="email">Votre adresse email</label>
+        <label htmlFor="email">{t('auth:email')}</label>
         <input
           id="email"
           type="text"
@@ -28,8 +30,8 @@ const ResetPasswordForm: React.FC<IResetPasswordFormProps> = ({
           onChange={(e) => setEmail(e.currentTarget.value)}
         />
       </div>
-      <button type="submit">Envoyer un mail de réinitialisation</button>
-      <p onClick={onBack}>Finalement je me souviens de mon mot de passe</p>
+      <button type="submit">{t('auth:reset_password_btn')}</button>
+      <p onClick={onBack}>{t('auth:go_back_login')}</p>
     </form>
   );
 };

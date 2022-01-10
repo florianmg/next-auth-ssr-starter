@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import clx from 'classnames';
 import toast from 'react-hot-toast';
@@ -26,6 +27,7 @@ const CONTENT_STATE = {
 
 const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { emailLogin, emailRegister, googleAuth, sendResetPasswordLink } =
     useAuthentification();
 
@@ -81,7 +83,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
                 })}
                 onClick={() => setCurrentContentState(CONTENT_STATE.LOGIN)}
               >
-                Connexion
+                {t('auth:login')}
               </div>
               <div
                 className={clx(styles.btn, {
@@ -90,11 +92,11 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
                 })}
                 onClick={() => setCurrentContentState(CONTENT_STATE.REGISTER)}
               >
-                Inscription
+                {t('auth:register')}
               </div>
             </>
           ) : (
-            <div className={styles.title}>Réinitialiser mot de passe</div>
+            <div className={styles.title}>{t('auth:reset_password')}</div>
           )}
         </div>
         <div className={styles.content}>

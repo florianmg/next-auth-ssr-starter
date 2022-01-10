@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import GoogleAuth from '../google-auth';
 
 interface IRegisterFormProps {
@@ -12,6 +13,7 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
 }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { t } = useTranslation();
 
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -25,7 +27,7 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
     <>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">{t('auth:email')}</label>
           <input
             id="email"
             type="text"
@@ -35,7 +37,7 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
           />
         </div>
         <div>
-          <label htmlFor="password">Mot de passe</label>
+          <label htmlFor="password">{t('auth:password')}</label>
           <input
             id="password"
             type="password"
@@ -44,7 +46,7 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
             onChange={(e) => setPassword(e.currentTarget.value)}
           />
         </div>
-        <button type="submit">Créer un compte</button>
+        <button type="submit">{t('auth:register_btn')}</button>
       </form>
       <hr />
       <GoogleAuth onClick={onGoogleAuth} />

@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
 import AuthForms from '../auth-forms';
 
 const DefaultNavigation = () => {
   const [isAuthFormsOpen, setIsAuthFormsOpen] = useState(false);
+  const { t } = useTranslation();
   return (
     <>
       <AuthForms
@@ -14,11 +16,13 @@ const DefaultNavigation = () => {
         <ul>
           <li>
             <Link href="/">
-              <a>Home</a>
+              <a>{t('common:home')}</a>
             </Link>
           </li>
           <li onClick={() => setIsAuthFormsOpen(true)}>
-            <p>login / register</p>
+            <p>
+              {t('auth:login')} / {t('auth:register')}
+            </p>
           </li>
         </ul>
       </nav>
