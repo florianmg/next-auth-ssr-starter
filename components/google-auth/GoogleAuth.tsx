@@ -1,11 +1,14 @@
+import { useTranslation } from 'next-i18next';
+
 interface IGoogleAuthProps {
   onClick: () => void;
 }
 
 const GoogleAuth: React.FC<IGoogleAuthProps> = ({ onClick }) => {
+  const { t } = useTranslation();
   return (
     <div role="button" onClick={onClick}>
-      Continuer avec Google
+      {t('auth:google_btn')}
     </div>
   );
 };

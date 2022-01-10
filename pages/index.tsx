@@ -2,13 +2,17 @@ import type { NextPage, GetStaticPropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 
-const Home: NextPage = (props) => {
-  console.log(props);
+import Navbar from '../components/navbar';
+
+const Home: NextPage = () => {
   const { t } = useTranslation();
   return (
-    <main>
-      <h1>Welcome to {t('common:app_name')}</h1>
-    </main>
+    <>
+      <Navbar />
+      <main>
+        <h1>Welcome to {t('common:app_name')}</h1>
+      </main>
+    </>
   );
 };
 

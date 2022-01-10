@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { auth } from '../lib/firebaseAdmin';
+import Navbar from '../components/navbar';
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -43,11 +44,16 @@ export const getServerSideProps = async (
 const Dashboard: React.FC<{ message?: string }> = ({ message }) => {
   const { t } = useTranslation();
   return (
-    <h1>
-      The app name is {t('common:app_name')}
-      <br />
-      {message}
-    </h1>
+    <>
+      <Navbar />
+      <main>
+        <h1>
+          The app name is {t('common:app_name')}
+          <br />
+          {message}
+        </h1>
+      </main>
+    </>
   );
   // return <h1>{message}</h1>;
 };
