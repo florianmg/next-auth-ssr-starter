@@ -43,7 +43,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     } else {
       setIsLoading(false);
       const errorCode = error?.code;
-      toast.error(t(`firebase:errors.${errorCode}`));
+      toast.error(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
     }
   };
 
@@ -56,7 +56,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
       router.push('/dashboard');
     } else {
       const errorCode = error?.code;
-      toast.error(t(`firebase:errors.${errorCode}`));
+      toast.error(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
     }
   };
 
@@ -69,7 +69,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
       router.push('/dashboard');
     } else {
       const errorCode = error?.code;
-      toast.error(t(`firebase:errors.${errorCode}`));
+      toast.error(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
     }
   };
 
