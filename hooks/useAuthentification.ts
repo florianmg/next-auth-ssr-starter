@@ -8,7 +8,8 @@ import {
   signOut,
   sendPasswordResetEmail,
   confirmPasswordReset,
-  AuthError
+  AuthError,
+  sendEmailVerification
 } from 'firebase/auth';
 
 import { auth } from '../lib/firebaseClient'
@@ -43,9 +44,12 @@ const useAuthentification = () => {
     return createUserWithEmailAndPassword(auth, email, password)
     .then((result) => {
       setUser(result.user);
-      return {
-        success: true
-      }
+      return sendEmailVerification(result.user).then(() => {
+        return {
+          success: true
+        }
+      })
+      
     })
     .catch((error) => {  
       
