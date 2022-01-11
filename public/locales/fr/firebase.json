@@ -1,0 +1,9 @@
+{
+  "errors": {
+    "generic": "Une erreur est survenu, merci de réessayer plus tard.",
+    "auth/email-already-in-use": "Cette adresse email est déjà lié a un compte.",
+    "auth/wrong-password": "Aucun compte n'éxiste avec cette combinaison email/mot de passe.",
+    "auth/user-not-found": "Aucun compte n'éxiste avec cette adresse email",
+    "auth/invalid-email": "Le format de l'adresse email n'est pas valide"
+  }
+}

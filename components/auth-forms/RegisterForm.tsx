@@ -1,15 +1,19 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
+
+import ErrorMessage from '../error-message';
 import GoogleAuth from '../google-auth';
 
 interface IRegisterFormProps {
   onSubmit: ({ email, password }: { email: string; password: string }) => void;
   onGoogleAuth: () => void;
+  error: string;
 }
 
 const RegisterForm: React.FC<IRegisterFormProps> = ({
   onSubmit,
   onGoogleAuth,
+  error,
 }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,6 +29,7 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
 
   return (
     <>
+      <ErrorMessage message={error} />
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">{t('auth:email')}</label>
