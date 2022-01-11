@@ -14,9 +14,13 @@ Le projet utilise firebase pour la gestion connexion / inscription + firestore c
 Créer un fichier `.env.local`
 
 **Insérer les valeurs suivantes :**
+
 FIREBASE_ADMIN_SDK_PRIVATE_KEY
+
 FIREBASE_ADMIN_SDK_CLIENT_EMAIL
+
 FIREBASE_ADMIN_SDK_PROJECT_ID
+
 FIREBASE_ADMIN_SDK_DATABASE_URL
 
     npm i
