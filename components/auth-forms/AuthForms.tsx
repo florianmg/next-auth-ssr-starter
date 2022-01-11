@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 import clx from 'classnames';
-import toast from 'react-hot-toast';
 
 import useAuthentification from '../../hooks/useAuthentification';
 import LoginForm from './LoginForm';
@@ -33,6 +32,11 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
 
   const [currentContentState, setCurrentContentState] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    setError('');
+  }, [currentContentState]);
 
   const handleResetPasswordLink = async (email: string) => {
     setIsLoading(true);
@@ -43,7 +47,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     } else {
       setIsLoading(false);
       const errorCode = error?.code;
-      toast.error(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
+      setError(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
     }
   };
 
@@ -56,7 +60,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
       router.push('/dashboard');
     } else {
       const errorCode = error?.code;
-      toast.error(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
+      setError(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
     }
   };
 
@@ -69,7 +73,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
       router.push('/dashboard');
     } else {
       const errorCode = error?.code;
-      toast.error(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
+      setError(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
     }
   };
 
@@ -112,9 +116,11 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
               onForgottenPassword={() =>
                 setCurrentContentState(CONTENT_STATE.PASSWORD)
               }
+              error={error}
             />
           ) : currentContentState === CONTENT_STATE.REGISTER ? (
             <RegisterForm
+              error={error}
               onSubmit={handleEmailRegister}
               onGoogleAuth={googleAuth}
             />
@@ -122,6 +128,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
             <ResetPasswordForm
               onSubmit={handleResetPasswordLink}
               onBack={() => setCurrentContentState(CONTENT_STATE.LOGIN)}
+              error={error}
             />
           ) : null}
         </div>
