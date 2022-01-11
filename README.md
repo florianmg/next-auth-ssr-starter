@@ -1,36 +1,33 @@
-Starter from https://colinhacks.com/essays/nextjs-firebase-authentication and adapted with firebase 9
+# Setup
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Le projet utilise firebase pour la gestion connexion / inscription + firestore comme base de donnée
 
-## Getting Started
+## Firebase
 
-First, run the development server:
+1. Se connecter a la console firebase et créer un nouveau projet
+2. Dans _Authentication > Sign-in method_: Activer **e-mail** et **google**
+3. Dans _Authentication > Templates_: Modifier URL d'action par http://localhost:3000/action
+4. Activer Firestore
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Projet
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Créer un fichier `.env.local`
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+**Insérer les valeurs suivantes :**
+FIREBASE_ADMIN_SDK_PRIVATE_KEY
+FIREBASE_ADMIN_SDK_CLIENT_EMAIL
+FIREBASE_ADMIN_SDK_PROJECT_ID
+FIREBASE_ADMIN_SDK_DATABASE_URL
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+    npm i
+    npm run dev
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Infos
 
-## Learn More
+Tous les textes se trouvent dans `/public/locales`
 
-To learn more about Next.js, take a look at the following resources:
+## Docs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Auth system](https://colinhacks.com/essays/nextjs-firebase-authentication)
+- [Translations package](https://github.com/isaachinman/next-i18next)
