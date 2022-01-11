@@ -22,6 +22,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       ...(await serverSideTranslations(context.locale as string, [
         'common',
         'auth',
+        'firebase',
       ])),
     },
   };

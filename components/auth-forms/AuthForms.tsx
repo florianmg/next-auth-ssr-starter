@@ -42,7 +42,8 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
       setCurrentContentState(CONTENT_STATE.LOGIN);
     } else {
       setIsLoading(false);
-      toast.error(error?.code as string);
+      const errorCode = error?.code;
+      toast.error(t(`firebase:errors.${errorCode}`));
     }
   };
 
@@ -54,7 +55,8 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     if (success) {
       router.push('/dashboard');
     } else {
-      toast.error(error?.code as string);
+      const errorCode = error?.code;
+      toast.error(t(`firebase:errors.${errorCode}`));
     }
   };
 
@@ -66,7 +68,8 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     if (success) {
       router.push('/dashboard');
     } else {
-      toast.error(error?.code as string);
+      const errorCode = error?.code;
+      toast.error(t(`firebase:errors.${errorCode}`));
     }
   };
 
