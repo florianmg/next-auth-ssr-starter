@@ -8,7 +8,9 @@ import {
   signOut,
   sendPasswordResetEmail,
   confirmPasswordReset,
-  AuthError
+  AuthError,
+  sendEmailVerification,
+  applyActionCode
 } from 'firebase/auth';
 
 import { auth } from '../lib/firebaseClient'
@@ -22,6 +24,21 @@ interface IFormValues {
 const useAuthentification = () => {
   const { setUser } = useAuth();
   const router = useRouter();
+
+  const verifyEmailValidity = async (oobCode: string): Promise<{success: boolean; error?: AuthError}> => {
+    return applyActionCode(auth, oobCode)
+      .then(() => {
+        return {
+          success: true
+        }
+      })
+      .catch((error) => {
+        return {
+          success: false,
+          error
+        }
+      });
+  }
 
   const emailLogin = async ({email, password}: IFormValues): Promise<{success: boolean; error?: AuthError}> => {
     return signInWithEmailAndPassword(auth, email, password)
@@ -43,9 +60,12 @@ const useAuthentification = () => {
     return createUserWithEmailAndPassword(auth, email, password)
     .then((result) => {
       setUser(result.user);
-      return {
-        success: true
-      }
+      return sendEmailVerification(result.user).then(() => {
+        return {
+          success: true
+        }
+      })
+      
     })
     .catch((error) => {  
       
@@ -99,6 +119,7 @@ const useAuthentification = () => {
     googleAuth,
     sendResetPasswordLink,
     resetPassword,
+    verifyEmailValidity,
     logout,
   }
 }

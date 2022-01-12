@@ -1,11 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import AuthForms from '../auth-forms';
 
+import { AUTH_FORM_STATE } from '../../constants';
+
 const DefaultNavigation = () => {
+  const router = useRouter();
   const [isAuthFormsOpen, setIsAuthFormsOpen] = useState(false);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (!router.query.authform) return;
+    setIsAuthFormsOpen(true);
+  }, [router.query.authform]);
+
   return (
     <>
       <AuthForms
