@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useAuthentification from '../../hooks/useAuthentification';
 import Loader from '../loader';
+import { AUTH_FORM_STATE } from '../../constants';
+
 import styles from './ResetPassword.module.scss';
 
 interface IResetPasswordProps {
@@ -19,8 +21,8 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<{
     text: string;
-    type: 'error' | 'success';
-  }>({ text: '', type: 'error' });
+    type: 'error' | 'success' | '';
+  }>({ text: '', type: '' });
 
   useEffect(() => {
     if (formValues.password === formValues.confirmPassword) {
@@ -41,7 +43,7 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
     if (success) {
       setIsLoading(false);
       setMessage({
-        text: "Votre mot de passe a bien été modifié, vous pouvez quitter la page ou vous allez être rediriger vers la page d'accueil",
+        text: 'Votre mot de passe a bien été modifié, vous pouvez quitter la page.',
         type: 'success',
       });
     } else if (error) {
@@ -61,7 +63,7 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
         <p>{message.text}</p>
         <button
           onClick={() => {
-            router.push('/');
+            router.push(`/?authform=${AUTH_FORM_STATE.LOGIN}`);
           }}
         >
           Me connecter
@@ -76,7 +78,7 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
         <p>{message.text}</p>
         <button
           onClick={() => {
-            router.push('/');
+            router.push(`/?authform=${AUTH_FORM_STATE.PASSWORD}`);
           }}
         >
           Refaire une demande de mot de passe
