@@ -2,6 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import ResetPasswordForm from '../components/reset-password';
+import VerifyEmail from '../components/verify-email';
 
 interface IActionsProps {
   mode: 'verifyEmail' | 'resetPassword';
@@ -33,7 +34,7 @@ const Action: React.FC<IActionsProps> = ({ mode, oobCode, apiKey }) => {
       {mode === 'resetPassword' ? (
         <ResetPasswordForm oobCode={oobCode} />
       ) : mode === 'verifyEmail' ? (
-        <p>VERIFY EMAIL COMPONENT</p>
+        <VerifyEmail oobCode={oobCode} />
       ) : null}
     </main>
   );
