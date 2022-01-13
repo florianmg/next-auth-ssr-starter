@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
+import Loader from '../loader';
 import ErrorMessage from '../error-message';
 import GoogleAuth from '../google-auth';
 
 interface ILoginFormProps {
-  onSubmit: ({ email, password }: { email: string; password: string }) => void;
+  onSubmit: ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => Promise<void>;
   onForgottenPassword: () => void;
   onGoogleAuth: () => void;
   error: string;
@@ -21,9 +28,9 @@ const LoginForm: React.FC<ILoginFormProps> = ({
   const [password, setPassword] = useState('');
   const { t } = useTranslation();
 
-  const handleSubmit = (event: React.SyntheticEvent) => {
+  const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    onSubmit({
+    await onSubmit({
       email,
       password,
     });
