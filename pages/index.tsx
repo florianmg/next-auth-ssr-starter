@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import type { NextPage, GetStaticPropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
@@ -8,6 +9,9 @@ const Home: NextPage = () => {
   const { t } = useTranslation();
   return (
     <>
+      <Head>
+        <title>{t('common:app_name')}</title>
+      </Head>
       <Navbar />
       <main>
         <h1>Welcome to {t('common:app_name')}</h1>

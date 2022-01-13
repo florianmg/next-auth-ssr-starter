@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import nookies from 'nookies';
 import { GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -45,6 +46,9 @@ const Dashboard: React.FC<{ message?: string }> = ({ message }) => {
   const { t } = useTranslation();
   return (
     <>
+      <Head>
+        <title>{`${t('common:app_name')} | Dashboard`}</title>
+      </Head>
       <Navbar />
       <main>
         <h1>
@@ -55,7 +59,6 @@ const Dashboard: React.FC<{ message?: string }> = ({ message }) => {
       </main>
     </>
   );
-  // return <h1>{message}</h1>;
 };
 
 export default Dashboard;
