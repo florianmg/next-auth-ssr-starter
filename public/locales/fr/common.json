@@ -1,4 +1,8 @@
 {
-    "home": "Accueil",
-    "app_name": "HAPY"
+	"home": "Accueil",
+	"app_name": "HAPY",
+	"page_title": {
+		"verifyEmail": "Vérification de l'adresse email",
+		"resetPassword": "Réinitialisation du mot de passe"
+	}
 }
