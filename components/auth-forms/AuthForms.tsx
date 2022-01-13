@@ -60,10 +60,13 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     email: string;
     password: string;
   }) => {
+    setIsLoading(true);
     const { success, error } = await emailLogin(formValues);
     if (success) {
+      setIsLoading(false);
       router.push('/dashboard');
     } else {
+      setIsLoading(false);
       const errorCode = error?.code;
       setError(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
     }
@@ -73,10 +76,13 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     email: string;
     password: string;
   }) => {
+    setIsLoading(true);
     const { success, error } = await emailRegister(formValues);
     if (success) {
+      setIsLoading(false);
       router.push('/dashboard');
     } else {
+      setIsLoading(false);
       const errorCode = error?.code;
       setError(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
     }
