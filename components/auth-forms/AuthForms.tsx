@@ -47,7 +47,6 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     setIsLoading(true);
     const { success, error } = await sendResetPasswordLink(email);
     if (success) {
-      setIsLoading(false);
       setCurrentContentState(AUTH_FORM_STATE.LOGIN);
     } else {
       setIsLoading(false);
@@ -63,7 +62,6 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     setIsLoading(true);
     const { success, error } = await emailLogin(formValues);
     if (success) {
-      setIsLoading(false);
       router.push('/dashboard');
     } else {
       setIsLoading(false);
@@ -79,7 +77,6 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     setIsLoading(true);
     const { success, error } = await emailRegister(formValues);
     if (success) {
-      setIsLoading(false);
       router.push('/dashboard');
     } else {
       setIsLoading(false);
