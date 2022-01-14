@@ -1,4 +1,5 @@
 import { CgCloseO } from 'react-icons/cg';
+import clx from 'classnames';
 import styles from './Modal.module.scss';
 
 interface IModalProps {
@@ -13,7 +14,23 @@ const Modal: React.FC<IModalProps> = ({
   onClose,
   maxWidth = 960,
 }) => {
-  if (!isOpen) return <></>;
+  return (
+    <div
+      className={clx('modal', {
+        'is-active': isOpen,
+      })}
+    >
+      <div className="modal-background" onClick={onClose}></div>
+      <div className="modal-content">
+        <div className="box">{children}</div>
+      </div>
+      <button
+        onClick={onClose}
+        className="modal-close is-large"
+        aria-label="close"
+      ></button>
+    </div>
+  );
   return (
     <div className={styles.container}>
       <div className={styles.content} style={{ maxWidth }}>
