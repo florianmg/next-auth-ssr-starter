@@ -29,6 +29,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     if (!router.query.authform) return;
@@ -45,7 +46,9 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     setIsLoading(true);
     const { success, error } = await sendResetPasswordLink(email);
     if (success) {
-      setCurrentContentState(AUTH_FORM_STATE.LOGIN);
+      setIsLoading(false);
+      setMessage(t('auth:email_send_validation'));
+      // setCurrentContentState(AUTH_FORM_STATE.LOGIN);
     } else {
       setIsLoading(false);
       const errorCode = error?.code;
@@ -133,8 +136,13 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
             />
           ) : currentContentState === AUTH_FORM_STATE.PASSWORD ? (
             <ResetPasswordForm
+              message={message}
               onSubmit={handleResetPasswordLink}
-              onBack={() => setCurrentContentState(AUTH_FORM_STATE.LOGIN)}
+              onBack={() => {
+                setCurrentContentState(AUTH_FORM_STATE.LOGIN);
+                setMessage('');
+                setError('');
+              }}
               error={error}
             />
           ) : null}

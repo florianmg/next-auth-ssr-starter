@@ -4,29 +4,33 @@ import { useTranslation } from 'next-i18next';
 import Button from '../button';
 import ErrorMessage from '../error-message';
 import InputText from '../input-text';
+import SuccessMessage from '../success-message';
 
 interface IResetPasswordFormProps {
-  onSubmit: (email: string) => void;
+  onSubmit: (email: string) => Promise<void>;
   onBack: () => void;
   error: string;
+  message: string;
 }
 
 const ResetPasswordForm: React.FC<IResetPasswordFormProps> = ({
   onSubmit,
   onBack,
   error,
+  message,
 }) => {
   const [email, setEmail] = useState('');
   const { t } = useTranslation();
 
-  const handleSubmit = (event: React.SyntheticEvent) => {
+  const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    onSubmit(email);
+    await onSubmit(email);
   };
 
   return (
     <>
       <ErrorMessage message={error} />
+      <SuccessMessage message={message} />
       <form onSubmit={handleSubmit}>
         <InputText
           label={t('auth:email')}
