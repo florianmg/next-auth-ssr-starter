@@ -13,24 +13,31 @@ import Loader from '../loader';
 
 import { AUTH_FORM_STATE } from '../../constants';
 
-import styles from './AuthForms.module.scss';
-
 interface IAuthFormsProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultContentState: number;
 }
 
-const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
+const AuthForms: React.FC<IAuthFormsProps> = ({
+  isOpen,
+  onClose,
+  defaultContentState,
+}) => {
   const router = useRouter();
   const { t } = useTranslation();
   const { emailLogin, emailRegister, googleAuth, sendResetPasswordLink } =
     useAuthentification();
 
-  const [currentContentState, setCurrentContentState] = useState(
-    AUTH_FORM_STATE.LOGIN
-  );
+  const [currentContentState, setCurrentContentState] =
+    useState(defaultContentState);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    setCurrentContentState(defaultContentState);
+  }, [defaultContentState]);
 
   useEffect(() => {
     if (!router.query.authform) return;
@@ -47,7 +54,8 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
     setIsLoading(true);
     const { success, error } = await sendResetPasswordLink(email);
     if (success) {
-      setCurrentContentState(AUTH_FORM_STATE.LOGIN);
+      setIsLoading(false);
+      setMessage(t('auth:email_send_validation'));
     } else {
       setIsLoading(false);
       const errorCode = error?.code;
@@ -84,37 +92,38 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
       setError(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
     }
   };
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose} maxWidth={500}>
-      <div className={styles.container}>
-        <div className={styles.header}>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div>
+        <div className="tabs is-fullwidth">
           {currentContentState !== AUTH_FORM_STATE.PASSWORD ? (
-            <>
-              <div
-                className={clx(styles.btn, {
-                  [styles.selected]:
-                    currentContentState === AUTH_FORM_STATE.LOGIN,
-                })}
-                onClick={() => setCurrentContentState(AUTH_FORM_STATE.LOGIN)}
-              >
-                {t('auth:login')}
-              </div>
-              <div
-                className={clx(styles.btn, {
-                  [styles.selected]:
-                    currentContentState === AUTH_FORM_STATE.REGISTER,
+            <ul>
+              <li
+                className={clx('has-text-weight-bold', {
+                  'is-active': currentContentState === AUTH_FORM_STATE.REGISTER,
                 })}
                 onClick={() => setCurrentContentState(AUTH_FORM_STATE.REGISTER)}
               >
-                {t('auth:register')}
-              </div>
-            </>
+                <a>{t('auth:register')}</a>
+              </li>
+              <li
+                className={clx('has-text-weight-bold', {
+                  'is-active': currentContentState === AUTH_FORM_STATE.LOGIN,
+                })}
+                onClick={() => setCurrentContentState(AUTH_FORM_STATE.LOGIN)}
+              >
+                <a>{t('auth:login')}</a>
+              </li>
+            </ul>
           ) : (
-            <div className={styles.title}>{t('auth:reset_password')}</div>
+            <ul>
+              <li className="is-active has-text-weight-bold">
+                <a>{t('auth:reset_password')}</a>
+              </li>
+            </ul>
           )}
         </div>
-        <div className={styles.content}>
+        <div>
           {isLoading ? (
             <Loader />
           ) : currentContentState === AUTH_FORM_STATE.LOGIN ? (
@@ -134,8 +143,13 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
             />
           ) : currentContentState === AUTH_FORM_STATE.PASSWORD ? (
             <ResetPasswordForm
+              message={message}
               onSubmit={handleResetPasswordLink}
-              onBack={() => setCurrentContentState(AUTH_FORM_STATE.LOGIN)}
+              onBack={() => {
+                setCurrentContentState(AUTH_FORM_STATE.LOGIN);
+                setMessage('');
+                setError('');
+              }}
               error={error}
             />
           ) : null}

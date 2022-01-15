@@ -20,9 +20,11 @@ const CookieConsent = () => {
   if (isCookiesAccepted) return null;
 
   return (
-    <div>
+    <div className="is-flex-direction-column notification is-info is-light navbar is-fixed-bottom is-flex is-align-items-flex-start">
       <p>Ce site enregistre des cookies pour fonctionner</p>
-      <button onClick={handleValidate}>Valider</button>
+      <button className="button is-secondary mt-3" onClick={handleValidate}>
+        Valider
+      </button>
     </div>
   );
 };

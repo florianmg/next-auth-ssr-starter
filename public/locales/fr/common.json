@@ -1,6 +1,7 @@
 {
 	"home": "Accueil",
 	"app_name": "HAPY",
+	"dashboard": "Dashboard",
 	"page_title": {
 		"verifyEmail": "Vérification de l'adresse email",
 		"resetPassword": "Réinitialisation du mot de passe"

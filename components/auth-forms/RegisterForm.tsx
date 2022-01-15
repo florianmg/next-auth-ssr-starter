@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import ReCAPTCHA from 'react-google-recaptcha';
-import Loader from '../loader';
+import InputText from '../input-text';
 import ErrorMessage from '../error-message';
 import GoogleAuth from '../google-auth';
+import Button from '../button';
 
 interface IRegisterFormProps {
   onSubmit: ({
@@ -55,27 +56,21 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
     <>
       <ErrorMessage message={error} />
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">{t('auth:email')}</label>
-          <input
-            id="email"
-            type="text"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.currentTarget.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">{t('auth:password')}</label>
-          <input
-            id="password"
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.currentTarget.value)}
-          />
-        </div>
-        <button type="submit">{t('auth:register_btn')}</button>
+        <InputText
+          label={t('auth:email')}
+          type="text"
+          required
+          value={email}
+          onChange={setEmail}
+        />
+        <InputText
+          label={t('auth:password')}
+          type="password"
+          required
+          value={password}
+          onChange={setPassword}
+        />
+        <Button type="submit" value={t('auth:register_btn')} />
       </form>
       <hr />
       <GoogleAuth onClick={onGoogleAuth} />

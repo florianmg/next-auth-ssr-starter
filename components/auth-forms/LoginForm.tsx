@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import Loader from '../loader';
+import InputText from '../input-text';
+import Button from '../button';
 import ErrorMessage from '../error-message';
 import GoogleAuth from '../google-auth';
 
@@ -40,30 +41,27 @@ const LoginForm: React.FC<ILoginFormProps> = ({
     <>
       <ErrorMessage message={error} />
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">{t('auth:email')}</label>
-          <input
-            id="email"
-            type="text"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.currentTarget.value)}
-          />
+        <InputText
+          label={t('auth:email')}
+          type="text"
+          required
+          value={email}
+          onChange={setEmail}
+        />
+        <InputText
+          label={t('auth:password')}
+          type="password"
+          required
+          value={password}
+          onChange={setPassword}
+        />
+        <div className="field is-grouped is-grouped-right">
+          <p onClick={onForgottenPassword} className="help">
+            <a>{t('auth:forgotten_password')}</a>
+          </p>
         </div>
-        <div>
-          <label htmlFor="password">{t('auth:password')}</label>
-          <input
-            id="password"
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.currentTarget.value)}
-          />
-        </div>
-        <small onClick={onForgottenPassword}>
-          {t('auth:forgotten_password')}
-        </small>
-        <button type="submit">{t('auth:login_btn')}</button>
+
+        <Button type="submit" value={t('auth:login_btn')} />
       </form>
       <hr />
       <GoogleAuth onClick={onGoogleAuth} />

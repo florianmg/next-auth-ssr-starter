@@ -1,29 +1,26 @@
-import { CgCloseO } from 'react-icons/cg';
-import styles from './Modal.module.scss';
+import clx from 'classnames';
 
 interface IModalProps {
   isOpen: boolean;
   onClose: () => void;
-  maxWidth?: number;
 }
 
-const Modal: React.FC<IModalProps> = ({
-  children,
-  isOpen,
-  onClose,
-  maxWidth = 960,
-}) => {
-  if (!isOpen) return <></>;
+const Modal: React.FC<IModalProps> = ({ children, isOpen, onClose }) => {
   return (
-    <div className={styles.container}>
-      <div className={styles.content} style={{ maxWidth }}>
-        <span className={styles['close-btn-container']}>
-          <span role="button" className={styles.icon} onClick={onClose}>
-            <CgCloseO />
-          </span>
-        </span>
-        {children}
+    <div
+      className={clx('modal', {
+        'is-active': isOpen,
+      })}
+    >
+      <div className="modal-background" onClick={onClose}></div>
+      <div className="modal-content hapy-auth-modal">
+        <div className="box">{children}</div>
       </div>
+      <button
+        onClick={onClose}
+        className="modal-close is-large"
+        aria-label="close"
+      ></button>
     </div>
   );
 };
