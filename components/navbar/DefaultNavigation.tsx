@@ -4,10 +4,14 @@ import Link from 'next/link';
 import clx from 'classnames';
 import { useTranslation } from 'next-i18next';
 import AuthForms from '../auth-forms';
+import { AUTH_FORM_STATE } from '../../constants';
 
 const DefaultNavigation = () => {
   const router = useRouter();
   const [isAuthFormsOpen, setIsAuthFormsOpen] = useState(false);
+  const [authFormOpenContent, setAuthFormOpenContent] = useState(
+    AUTH_FORM_STATE.LOGIN
+  );
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -19,6 +23,7 @@ const DefaultNavigation = () => {
   return (
     <>
       <AuthForms
+        defaultContentState={authFormOpenContent}
         isOpen={isAuthFormsOpen}
         onClose={() => setIsAuthFormsOpen(false)}
       />
@@ -63,15 +68,21 @@ const DefaultNavigation = () => {
                 <div className="buttons">
                   <button
                     className="button is-primary"
-                    onClick={() => setIsAuthFormsOpen(true)}
+                    onClick={() => {
+                      setIsAuthFormsOpen(true);
+                      setAuthFormOpenContent(AUTH_FORM_STATE.REGISTER);
+                    }}
                   >
                     <strong>{t('auth:register')}</strong>
                   </button>
                   <button
                     className="button is-light"
-                    onClick={() => setIsAuthFormsOpen(true)}
+                    onClick={() => {
+                      setIsAuthFormsOpen(true);
+                      setAuthFormOpenContent(AUTH_FORM_STATE.LOGIN);
+                    }}
                   >
-                    <strong>{t('auth:login')} </strong>
+                    <strong>{t('auth:login')}</strong>
                   </button>
                 </div>
               </div>

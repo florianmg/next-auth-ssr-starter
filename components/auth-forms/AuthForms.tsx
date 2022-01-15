@@ -16,20 +16,28 @@ import { AUTH_FORM_STATE } from '../../constants';
 interface IAuthFormsProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultContentState: number;
 }
 
-const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
+const AuthForms: React.FC<IAuthFormsProps> = ({
+  isOpen,
+  onClose,
+  defaultContentState,
+}) => {
   const router = useRouter();
   const { t } = useTranslation();
   const { emailLogin, emailRegister, googleAuth, sendResetPasswordLink } =
     useAuthentification();
 
-  const [currentContentState, setCurrentContentState] = useState(
-    AUTH_FORM_STATE.LOGIN
-  );
+  const [currentContentState, setCurrentContentState] =
+    useState(defaultContentState);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    setCurrentContentState(defaultContentState);
+  }, [defaultContentState]);
 
   useEffect(() => {
     if (!router.query.authform) return;
