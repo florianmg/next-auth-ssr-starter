@@ -56,7 +56,6 @@ const AuthForms: React.FC<IAuthFormsProps> = ({
     if (success) {
       setIsLoading(false);
       setMessage(t('auth:email_send_validation'));
-      // setCurrentContentState(AUTH_FORM_STATE.LOGIN);
     } else {
       setIsLoading(false);
       const errorCode = error?.code;
@@ -101,19 +100,19 @@ const AuthForms: React.FC<IAuthFormsProps> = ({
             <ul>
               <li
                 className={clx('has-text-weight-bold', {
-                  'is-active': currentContentState === AUTH_FORM_STATE.LOGIN,
-                })}
-                onClick={() => setCurrentContentState(AUTH_FORM_STATE.LOGIN)}
-              >
-                <a>{t('auth:login')}</a>
-              </li>
-              <li
-                className={clx('has-text-weight-bold', {
                   'is-active': currentContentState === AUTH_FORM_STATE.REGISTER,
                 })}
                 onClick={() => setCurrentContentState(AUTH_FORM_STATE.REGISTER)}
               >
                 <a>{t('auth:register')}</a>
+              </li>
+              <li
+                className={clx('has-text-weight-bold', {
+                  'is-active': currentContentState === AUTH_FORM_STATE.LOGIN,
+                })}
+                onClick={() => setCurrentContentState(AUTH_FORM_STATE.LOGIN)}
+              >
+                <a>{t('auth:login')}</a>
               </li>
             </ul>
           ) : (

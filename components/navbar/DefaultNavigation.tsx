@@ -67,7 +67,7 @@ const DefaultNavigation = () => {
               <div className="navbar-item">
                 <div className="buttons">
                   <button
-                    className="button is-primary"
+                    className="button is-light"
                     onClick={() => {
                       setIsAuthFormsOpen(true);
                       setAuthFormOpenContent(AUTH_FORM_STATE.REGISTER);
@@ -76,7 +76,7 @@ const DefaultNavigation = () => {
                     <strong>{t('auth:register')}</strong>
                   </button>
                   <button
-                    className="button is-light"
+                    className="button is-primary"
                     onClick={() => {
                       setIsAuthFormsOpen(true);
                       setAuthFormOpenContent(AUTH_FORM_STATE.LOGIN);
