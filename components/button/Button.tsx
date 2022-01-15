@@ -1,5 +1,3 @@
-import clx from 'classnames';
-
 interface IButtonProps {
   type: 'submit' | 'button';
   value: string;
