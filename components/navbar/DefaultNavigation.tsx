@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import clx from 'classnames';
 import { useTranslation } from 'next-i18next';
 import AuthForms from '../auth-forms';
 
 const DefaultNavigation = () => {
   const router = useRouter();
   const [isAuthFormsOpen, setIsAuthFormsOpen] = useState(false);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -20,7 +22,11 @@ const DefaultNavigation = () => {
         isOpen={isAuthFormsOpen}
         onClose={() => setIsAuthFormsOpen(false)}
       />
-      <nav className="navbar" role="navigation" aria-label="main navigation">
+      <nav
+        className="navbar has-shadow py-2"
+        role="navigation"
+        aria-label="main navigation"
+      >
         <div className="container">
           <div className="navbar-brand">
             <Link href="/">
@@ -28,10 +34,12 @@ const DefaultNavigation = () => {
             </Link>
             <a
               role="button"
-              className="navbar-burger"
+              className={clx('navbar-burger', {
+                'is-active': isBurgerOpen,
+              })}
               aria-label="menu"
-              aria-expanded="false"
-              data-target="navbarBasicExample"
+              aria-expanded={isBurgerOpen}
+              onClick={() => setIsBurgerOpen((prevState) => !prevState)}
             >
               <span aria-hidden="true"></span>
               <span aria-hidden="true"></span>
@@ -39,7 +47,12 @@ const DefaultNavigation = () => {
             </a>
           </div>
 
-          <div id="navbarBasicExample" className="navbar-menu">
+          <div
+            id="navbarBasicExample"
+            className={clx('navbar-menu', {
+              'is-active': isBurgerOpen,
+            })}
+          >
             <div className="navbar-start">
               <Link href="/">
                 <a className="navbar-item">{t('common:home')}</a>

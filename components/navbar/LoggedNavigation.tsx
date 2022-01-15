@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
+import clx from 'classnames';
 import useAuthentification from '../../hooks/useAuthentification';
 
 const LoggedNavigation: React.FC = () => {
   const { logout } = useAuthentification();
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const { t } = useTranslation();
 
   return (
@@ -15,10 +18,12 @@ const LoggedNavigation: React.FC = () => {
           </Link>
           <a
             role="button"
-            className="navbar-burger"
+            className={clx('navbar-burger', {
+              'is-active': isBurgerOpen,
+            })}
             aria-label="menu"
-            aria-expanded="false"
-            data-target="navbarBasicExample"
+            aria-expanded={isBurgerOpen}
+            onClick={() => setIsBurgerOpen((prevState) => !prevState)}
           >
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -26,7 +31,12 @@ const LoggedNavigation: React.FC = () => {
           </a>
         </div>
 
-        <div id="navbarBasicExample" className="navbar-menu">
+        <div
+          id="navbarBasicExample"
+          className={clx('navbar-menu', {
+            'is-active': isBurgerOpen,
+          })}
+        >
           <div className="navbar-start"></div>
           <div className="navbar-end">
             <div className="navbar-item">
