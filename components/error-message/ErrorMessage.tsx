@@ -1,5 +1,3 @@
-import styles from './ErrorMessage.module.scss';
-
 interface IErrorMessage {
   message: string;
 }
@@ -7,7 +5,7 @@ interface IErrorMessage {
 const ErrorMessage: React.FC<IErrorMessage> = ({ message }) => {
   if (!message.length) return null;
   return (
-    <div className={styles.container}>
+    <div className="notification is-danger is-light">
       <p>{message}</p>
     </div>
   );
