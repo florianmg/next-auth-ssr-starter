@@ -89,7 +89,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
           {currentContentState !== AUTH_FORM_STATE.PASSWORD ? (
             <ul>
               <li
-                className={clx({
+                className={clx('has-text-weight-bold', {
                   'is-active': currentContentState === AUTH_FORM_STATE.LOGIN,
                 })}
                 onClick={() => setCurrentContentState(AUTH_FORM_STATE.LOGIN)}
@@ -97,7 +97,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
                 <a>{t('auth:login')}</a>
               </li>
               <li
-                className={clx({
+                className={clx('has-text-weight-bold', {
                   'is-active': currentContentState === AUTH_FORM_STATE.REGISTER,
                 })}
                 onClick={() => setCurrentContentState(AUTH_FORM_STATE.REGISTER)}
@@ -107,7 +107,7 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
             </ul>
           ) : (
             <ul>
-              <li className="is-active">
+              <li className="is-active has-text-weight-bold">
                 <a>{t('auth:reset_password')}</a>
               </li>
             </ul>

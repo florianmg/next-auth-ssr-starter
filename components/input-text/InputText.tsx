@@ -22,7 +22,10 @@ const InputText: React.FC<IInputText> = ({
   return (
     <div className="field">
       {label && (
-        <label className="label" htmlFor={cleanLabel(label)}>
+        <label
+          className="label has-text-weight-semibold"
+          htmlFor={cleanLabel(label)}
+        >
           {label}
         </label>
       )}
