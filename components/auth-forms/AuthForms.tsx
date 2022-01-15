@@ -13,8 +13,6 @@ import Loader from '../loader';
 
 import { AUTH_FORM_STATE } from '../../constants';
 
-import styles from './AuthForms.module.scss';
-
 interface IAuthFormsProps {
   isOpen: boolean;
   onClose: () => void;
@@ -84,37 +82,38 @@ const AuthForms: React.FC<IAuthFormsProps> = ({ isOpen, onClose }) => {
       setError(t(`firebase:errors.${errorCode}`, 'firebase:errors.generic'));
     }
   };
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose} maxWidth={500}>
-      <div className={styles.container}>
-        <div className={styles.header}>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div>
+        <div className="tabs is-fullwidth">
           {currentContentState !== AUTH_FORM_STATE.PASSWORD ? (
-            <>
-              <div
-                className={clx(styles.btn, {
-                  [styles.selected]:
-                    currentContentState === AUTH_FORM_STATE.LOGIN,
+            <ul>
+              <li
+                className={clx({
+                  'is-active': currentContentState === AUTH_FORM_STATE.LOGIN,
                 })}
                 onClick={() => setCurrentContentState(AUTH_FORM_STATE.LOGIN)}
               >
-                {t('auth:login')}
-              </div>
-              <div
-                className={clx(styles.btn, {
-                  [styles.selected]:
-                    currentContentState === AUTH_FORM_STATE.REGISTER,
+                <a>{t('auth:login')}</a>
+              </li>
+              <li
+                className={clx({
+                  'is-active': currentContentState === AUTH_FORM_STATE.REGISTER,
                 })}
                 onClick={() => setCurrentContentState(AUTH_FORM_STATE.REGISTER)}
               >
-                {t('auth:register')}
-              </div>
-            </>
+                <a>{t('auth:register')}</a>
+              </li>
+            </ul>
           ) : (
-            <div className={styles.title}>{t('auth:reset_password')}</div>
+            <ul>
+              <li className="is-active">
+                <a>{t('auth:reset_password')}</a>
+              </li>
+            </ul>
           )}
         </div>
-        <div className={styles.content}>
+        <div>
           {isLoading ? (
             <Loader />
           ) : currentContentState === AUTH_FORM_STATE.LOGIN ? (

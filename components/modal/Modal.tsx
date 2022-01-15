@@ -1,19 +1,11 @@
-import { CgCloseO } from 'react-icons/cg';
 import clx from 'classnames';
-import styles from './Modal.module.scss';
 
 interface IModalProps {
   isOpen: boolean;
   onClose: () => void;
-  maxWidth?: number;
 }
 
-const Modal: React.FC<IModalProps> = ({
-  children,
-  isOpen,
-  onClose,
-  maxWidth = 960,
-}) => {
+const Modal: React.FC<IModalProps> = ({ children, isOpen, onClose }) => {
   return (
     <div
       className={clx('modal', {
@@ -21,7 +13,7 @@ const Modal: React.FC<IModalProps> = ({
       })}
     >
       <div className="modal-background" onClick={onClose}></div>
-      <div className="modal-content">
+      <div className="modal-content hapy-auth-modal">
         <div className="box">{children}</div>
       </div>
       <button

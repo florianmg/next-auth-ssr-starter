@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
+import Button from '../button';
 import ErrorMessage from '../error-message';
+import InputText from '../input-text';
 
 interface IResetPasswordFormProps {
   onSubmit: (email: string) => void;
@@ -26,18 +28,17 @@ const ResetPasswordForm: React.FC<IResetPasswordFormProps> = ({
     <>
       <ErrorMessage message={error} />
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">{t('auth:email')}</label>
-          <input
-            id="email"
-            type="text"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.currentTarget.value)}
-          />
-        </div>
-        <button type="submit">{t('auth:reset_password_btn')}</button>
-        <p onClick={onBack}>{t('auth:go_back_login')}</p>
+        <InputText
+          label={t('auth:email')}
+          type="text"
+          required
+          value={email}
+          onChange={setEmail}
+        />
+        <Button type="submit" value={t('auth:reset_password_btn')} />
+        <p onClick={onBack}>
+          <a>{t('auth:go_back_login')}</a>
+        </p>
       </form>
     </>
   );
