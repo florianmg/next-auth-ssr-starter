@@ -10,13 +10,21 @@ import VerifyEmail from '../components/verify-email';
 interface IActionsProps {
   mode: 'verifyEmail' | 'resetPassword';
   oobCode: string;
-  apiKey: string;
 }
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const { mode, oobCode, apiKey } = context.query;
+  const { mode, oobCode } = context.query;
+
+  if (!mode || !oobCode) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
+    };
+  }
 
   return {
     props: {
@@ -26,12 +34,11 @@ export const getServerSideProps = async (
       ])),
       mode,
       oobCode,
-      apiKey,
     },
   };
 };
 
-const Action: React.FC<IActionsProps> = ({ mode, oobCode, apiKey }) => {
+const Action: React.FC<IActionsProps> = ({ mode, oobCode }) => {
   const { t } = useTranslation();
   return (
     <>
