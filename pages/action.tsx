@@ -47,8 +47,7 @@ const Action: React.FC<IActionsProps> = ({ mode, oobCode }) => {
           `common:page_title.${mode}`
         )}`}</title>
       </Head>
-      <main>
-        <h1>Action page</h1>
+      <main className="hero is-flex is-justify-content-center is-align-items-center is-fullheight">
         {mode === 'resetPassword' ? (
           <ResetPasswordForm oobCode={oobCode} />
         ) : mode === 'verifyEmail' ? (

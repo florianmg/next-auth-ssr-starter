@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import useAuthentification from '../../hooks/useAuthentification';
-import Loader from '../loader';
-import { AUTH_FORM_STATE } from '../../constants';
 
-import styles from './ResetPassword.module.scss';
+import useAuthentification from '../../hooks/useAuthentification';
+
+import Loader from '../loader';
+import InputText from '../input-text';
+import Button from '../button';
+
+import { AUTH_FORM_STATE } from '../../constants';
 
 interface IResetPasswordProps {
   oobCode: string;
@@ -25,6 +28,17 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
   }>({ text: '', type: '' });
 
   useEffect(() => {
+    if (message.type === 'success') {
+      const timeout = setTimeout(() => {
+        router.push(`/?authform=${AUTH_FORM_STATE.LOGIN}`);
+      }, 3500);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [message, router]);
+
+  useEffect(() => {
     if (formValues.password === formValues.confirmPassword) {
       setIsPasswordIdentical(true);
     } else {
@@ -43,7 +57,7 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
     if (success) {
       setIsLoading(false);
       setMessage({
-        text: 'Votre mot de passe a bien été modifié, vous pouvez quitter la page.',
+        text: 'Votre mot de passe a bien été modifié, vous allez être redirigé vers la page de connexion.',
         type: 'success',
       });
     } else if (error) {
@@ -59,16 +73,9 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
 
   if (message.type === 'success') {
     return (
-      <>
+      <div className="notification is-info">
         <p>{message.text}</p>
-        <button
-          onClick={() => {
-            router.push(`/?authform=${AUTH_FORM_STATE.LOGIN}`);
-          }}
-        >
-          Me connecter
-        </button>
-      </>
+      </div>
     );
   }
 
@@ -88,43 +95,45 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
   }
 
   return (
-    <div>
-      <h3>Réinitialiser le mot de passe</h3>
+    <div className="box section hapy-reset-password-form">
+      <h3 className="has-text-centered has-text-weight-bold mb-4">
+        Réinitialiser le mot de passe
+      </h3>
+      <p className="mb-4">
+        Entrez votre nouveau mot de passe puis valider pour terminer la
+        modification
+      </p>
       <form onSubmit={handleResetPassword}>
-        <div>
-          <label htmlFor="password">Nouveau mot de passe</label>
-          <input
-            id="password"
-            type="password"
-            value={formValues.password}
-            onChange={(e) =>
-              setFormValues({ ...formValues, password: e.currentTarget.value })
-            }
-          />
-        </div>
-        <div>
-          <label htmlFor="confirm-password">Confirmer le mot de passe</label>
-          <input
-            id="confirm-password"
-            type="password"
-            value={formValues.confirmPassword}
-            onChange={(e) =>
-              setFormValues({
-                ...formValues,
-                confirmPassword: e.currentTarget.value,
-              })
-            }
-          />
-        </div>
+        <InputText
+          label={'Nouveau mot de passe '}
+          type="password"
+          required
+          value={formValues.password}
+          onChange={(newValue: string) =>
+            setFormValues({ ...formValues, password: newValue })
+          }
+        />
+
+        <InputText
+          label={'Confirmer le mot de passe'}
+          type="password"
+          required
+          value={formValues.confirmPassword}
+          onChange={(newValue: string) =>
+            setFormValues({ ...formValues, confirmPassword: newValue })
+          }
+        />
+
         {formValues.password.length > 0 && !isPasswordsIdentical && (
-          <p>Les mots de passe ne sont pas identiques</p>
+          <div className="notification is-warning is-light">
+            <p>Les mots de passe ne sont pas identiques</p>
+          </div>
         )}
-        <button
-          disabled={!isPasswordsIdentical || formValues.password.length === 0}
+        <Button
           type="submit"
-        >
-          Changer le mot de passe
-        </button>
+          value="Changer le mot de passe"
+          disabled={!isPasswordsIdentical || formValues.password.length === 0}
+        />
       </form>
     </div>
   );
