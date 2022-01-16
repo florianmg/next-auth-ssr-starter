@@ -4,6 +4,7 @@ import useAuthentification from '../../hooks/useAuthentification';
 
 import Loader from '../loader';
 import { AUTH_FORM_STATE } from '../../constants';
+import Button from '../button';
 
 interface IVerifyEmailProps {
   oobCode: string;
@@ -13,19 +14,32 @@ const VerifyEmail: React.FC<IVerifyEmailProps> = ({ oobCode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { verifyEmailValidity } = useAuthentification();
+  const [message, setMessage] = useState<{
+    text: string;
+    type: 'error' | 'success' | '';
+  }>({ text: '', type: '' });
 
   useEffect(() => {
     (async () => {
-      const { success } = await verifyEmailValidity(oobCode);
+      const { success, error } = await verifyEmailValidity(oobCode);
       if (success) {
-        setIsLoading(false);
+        setMessage({
+          text: 'Email vérifié, vous allez être redirigé',
+          type: 'success',
+        });
+      } else {
+        setMessage({
+          text: error?.code as string,
+          type: 'error',
+        });
       }
+
+      setIsLoading(false);
     })();
   }, [oobCode, verifyEmailValidity]);
 
   useEffect(() => {
-    if (!isLoading) {
-      console.log('start timeout');
+    if (!isLoading && message.type === 'success') {
       const timeout = setTimeout(() => {
         router.push(`/?authform=${AUTH_FORM_STATE.LOGIN}`);
       }, 2500);
@@ -33,10 +47,22 @@ const VerifyEmail: React.FC<IVerifyEmailProps> = ({ oobCode }) => {
         clearTimeout(timeout);
       };
     }
-  }, [isLoading, router]);
+  }, [isLoading, router, message]);
 
   if (isLoading) return <Loader />;
-  return <p>Email vérifié, vous allez être redirigé</p>;
+  return (
+    <div className="box section">
+      <p>{message.text}</p>
+      <Button
+        onClick={() => {
+          router.push('/');
+        }}
+        className="mt-3"
+        type="button"
+        value="Retourner a l'accueil"
+      />
+    </div>
+  );
 };
 
 export default VerifyEmail;
