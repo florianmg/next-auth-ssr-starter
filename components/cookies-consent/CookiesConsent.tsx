@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { setCookie, parseCookies } from 'nookies';
+import { useTranslation } from 'next-i18next';
 
 const CookieConsent = () => {
   const [isCookiesAccepted, setIsCookiesAccepted] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const cookies = parseCookies();
@@ -21,9 +23,9 @@ const CookieConsent = () => {
 
   return (
     <div className="is-flex-direction-column notification is-info is-light navbar is-fixed-bottom is-flex is-align-items-flex-start">
-      <p>Ce site enregistre des cookies pour fonctionner</p>
+      <p>{t('common:cookies_consent')}</p>
       <button className="button is-secondary mt-3" onClick={handleValidate}>
-        Valider
+        {t('common:i_understand')}
       </button>
     </div>
   );
