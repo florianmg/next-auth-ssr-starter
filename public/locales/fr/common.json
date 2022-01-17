@@ -5,5 +5,7 @@
 	"page_title": {
 		"verifyEmail": "Vérification de l'adresse email",
 		"resetPassword": "Réinitialisation du mot de passe"
-	}
+	},
+	"cookies_consent": "Ce site enregistre des cookies pour fonctionner correctement",
+	"i_understand": "J'ai compris"
 }

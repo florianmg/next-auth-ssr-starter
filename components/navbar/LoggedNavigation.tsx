@@ -10,7 +10,11 @@ const LoggedNavigation: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <nav className="navbar" role="navigation" aria-label="main navigation">
+    <nav
+      className="navbar has-shadow py-2"
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div className="container">
         <div className="navbar-brand">
           <Link href="/">

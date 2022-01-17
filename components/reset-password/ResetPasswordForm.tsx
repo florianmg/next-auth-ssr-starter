@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
+import { useTranslation } from 'next-i18next';
 import useAuthentification from '../../hooks/useAuthentification';
 
 import Loader from '../loader';
@@ -16,6 +17,7 @@ interface IResetPasswordProps {
 const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
   const router = useRouter();
   const { resetPassword } = useAuthentification();
+  const { t } = useTranslation();
   const [formValues, setFormValues] = useState({
     password: '',
     confirmPassword: '',
@@ -57,7 +59,7 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
     if (success) {
       setIsLoading(false);
       setMessage({
-        text: 'Votre mot de passe a bien été modifié, vous allez être redirigé vers la page de connexion.',
+        text: t('auth:reset_password_success'),
         type: 'success',
       });
     } else if (error) {
@@ -82,13 +84,13 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
   if (message.type === 'error') {
     return (
       <>
-        <p>{message.text}</p>
+        <p>{t(`firebase:errors.${message.text}`, 'firebase:errors.generic')}</p>
         <button
           onClick={() => {
             router.push(`/?authform=${AUTH_FORM_STATE.PASSWORD}`);
           }}
         >
-          Refaire une demande de mot de passe
+          {t('auth:reset_password_again')}
         </button>
       </>
     );
@@ -97,15 +99,12 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
   return (
     <div className="box section hapy-reset-password-form">
       <h3 className="has-text-centered has-text-weight-bold mb-4">
-        Réinitialiser le mot de passe
+        {t('auth:reset_password')}
       </h3>
-      <p className="mb-4">
-        Entrez votre nouveau mot de passe puis valider pour terminer la
-        modification
-      </p>
+      <p className="mb-4">{t('auth:reset_password_helper')}</p>
       <form onSubmit={handleResetPassword}>
         <InputText
-          label={'Nouveau mot de passe '}
+          label={t('auth:new_password')}
           type="password"
           required
           value={formValues.password}
@@ -115,7 +114,7 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
         />
 
         <InputText
-          label={'Confirmer le mot de passe'}
+          label={t('auth:confirm_password')}
           type="password"
           required
           value={formValues.confirmPassword}
@@ -126,12 +125,12 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
 
         {formValues.password.length > 0 && !isPasswordsIdentical && (
           <div className="notification is-warning is-light">
-            <p>Les mots de passe ne sont pas identiques</p>
+            <p>{t('auth:different_password')}</p>
           </div>
         )}
         <Button
           type="submit"
-          value="Changer le mot de passe"
+          value={t('auth:reset_password_btn_final')}
           disabled={!isPasswordsIdentical || formValues.password.length === 0}
         />
       </form>
