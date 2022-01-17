@@ -31,6 +31,7 @@ export const getServerSideProps = async (
       ...(await serverSideTranslations(context.locale as string, [
         'common',
         'auth',
+        'firebase',
       ])),
       mode,
       oobCode,

@@ -84,7 +84,7 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({ oobCode }) => {
   if (message.type === 'error') {
     return (
       <>
-        <p>{message.text}</p>
+        <p>{t(`firebase:errors.${message.text}`, 'firebase:errors.generic')}</p>
         <button
           onClick={() => {
             router.push(`/?authform=${AUTH_FORM_STATE.PASSWORD}`);

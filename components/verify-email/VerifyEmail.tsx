@@ -26,20 +26,20 @@ const VerifyEmail: React.FC<IVerifyEmailProps> = ({ oobCode }) => {
     (async () => {
       const { success, error } = await verifyEmailValidity(oobCode);
       if (success) {
+        setIsLoading(false);
         setMessage({
           text: t('auth:verify_email_success'),
           type: 'success',
         });
-      } else {
+      } else if (error) {
+        setIsLoading(false);
         setMessage({
-          text: error?.code as string,
+          text: t(`firebase:errors.${error.code}`),
           type: 'error',
         });
       }
-
-      setIsLoading(false);
     })();
-  }, [oobCode, t, verifyEmailValidity]);
+  }, []);
 
   useEffect(() => {
     if (!isLoading && message.type === 'success') {
