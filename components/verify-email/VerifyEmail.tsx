@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 
 import { useTranslation } from 'next-i18next';
@@ -22,24 +22,27 @@ const VerifyEmail: React.FC<IVerifyEmailProps> = ({ oobCode }) => {
     type: 'error' | 'success' | '';
   }>({ text: '', type: '' });
 
+  const handleEmailVerification = useCallback(async () => {
+    if (!isLoading) return;
+    const { success, error } = await verifyEmailValidity(oobCode);
+    if (success) {
+      setIsLoading(false);
+      setMessage({
+        text: t('auth:verify_email_success'),
+        type: 'success',
+      });
+    } else if (error) {
+      setIsLoading(false);
+      setMessage({
+        text: t(`firebase:errors.${error.code}`),
+        type: 'error',
+      });
+    }
+  }, [oobCode, t, verifyEmailValidity, isLoading]);
+
   useEffect(() => {
-    (async () => {
-      const { success, error } = await verifyEmailValidity(oobCode);
-      if (success) {
-        setIsLoading(false);
-        setMessage({
-          text: t('auth:verify_email_success'),
-          type: 'success',
-        });
-      } else if (error) {
-        setIsLoading(false);
-        setMessage({
-          text: t(`firebase:errors.${error.code}`),
-          type: 'error',
-        });
-      }
-    })();
-  }, []);
+    handleEmailVerification();
+  }, [handleEmailVerification]);
 
   useEffect(() => {
     if (!isLoading && message.type === 'success') {
