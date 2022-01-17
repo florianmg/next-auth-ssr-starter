@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+
+import { useTranslation } from 'next-i18next';
 import useAuthentification from '../../hooks/useAuthentification';
 
 import Loader from '../loader';
@@ -11,9 +13,10 @@ interface IVerifyEmailProps {
 }
 
 const VerifyEmail: React.FC<IVerifyEmailProps> = ({ oobCode }) => {
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { verifyEmailValidity } = useAuthentification();
+  const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState<{
     text: string;
     type: 'error' | 'success' | '';
@@ -24,7 +27,7 @@ const VerifyEmail: React.FC<IVerifyEmailProps> = ({ oobCode }) => {
       const { success, error } = await verifyEmailValidity(oobCode);
       if (success) {
         setMessage({
-          text: 'Email vérifié, vous allez être redirigé',
+          text: t('auth:verify_email_success'),
           type: 'success',
         });
       } else {
@@ -36,7 +39,7 @@ const VerifyEmail: React.FC<IVerifyEmailProps> = ({ oobCode }) => {
 
       setIsLoading(false);
     })();
-  }, [oobCode, verifyEmailValidity]);
+  }, [oobCode, t, verifyEmailValidity]);
 
   useEffect(() => {
     if (!isLoading && message.type === 'success') {
@@ -59,7 +62,7 @@ const VerifyEmail: React.FC<IVerifyEmailProps> = ({ oobCode }) => {
         }}
         className="mt-3"
         type="button"
-        value="Retourner a l'accueil"
+        value={t('auth:go_back_home')}
       />
     </div>
   );
